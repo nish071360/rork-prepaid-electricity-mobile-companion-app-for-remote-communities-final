@@ -13,13 +13,14 @@ import {
   Type,
   HelpCircle,
 } from "lucide-react-native";
+import { useTextSize } from "@/hooks/useTextSize";
 
 
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const [selectedLanguage, setSelectedLanguage] = useState("English");
-  const [selectedTextSize, setSelectedTextSize] = useState("Medium");
+  const { textSize, setTextSize, getScaledFontSize } = useTextSize();
 
   const showLanguageOptions = () => {
     Alert.alert(
@@ -40,9 +41,9 @@ export default function SettingsScreen() {
       "Text Size",
       "Choose text size",
       [
-        { text: "Small", onPress: () => setSelectedTextSize("Small") },
-        { text: "Medium", onPress: () => setSelectedTextSize("Medium") },
-        { text: "Large", onPress: () => setSelectedTextSize("Large") },
+        { text: "Small", onPress: () => setTextSize("Small") },
+        { text: "Medium", onPress: () => setTextSize("Medium") },
+        { text: "Large", onPress: () => setTextSize("Large") },
         { text: "Cancel", style: "cancel" },
       ]
     );
@@ -56,7 +57,7 @@ export default function SettingsScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + 24 }]}
       >
-        <Text style={styles.title}>Settings</Text>
+        <Text style={[styles.title, { fontSize: getScaledFontSize(36) }]}>Settings</Text>
 
         <TouchableOpacity
           style={styles.settingButton}
@@ -65,8 +66,8 @@ export default function SettingsScreen() {
         >
           <Globe color="#059669" size={48} strokeWidth={3} />
           <View style={styles.settingTextContainer}>
-            <Text style={styles.settingLabel}>Language</Text>
-            <Text style={styles.settingValue}>{selectedLanguage}</Text>
+            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24) }]}>Language</Text>
+            <Text style={[styles.settingValue, { fontSize: getScaledFontSize(28) }]}>{selectedLanguage}</Text>
           </View>
         </TouchableOpacity>
 
@@ -77,8 +78,8 @@ export default function SettingsScreen() {
         >
           <Type color="#0284C7" size={48} strokeWidth={3} />
           <View style={styles.settingTextContainer}>
-            <Text style={styles.settingLabel}>Text Size</Text>
-            <Text style={styles.settingValue}>{selectedTextSize}</Text>
+            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24) }]}>Text Size</Text>
+            <Text style={[styles.settingValue, { fontSize: getScaledFontSize(28) }]}>{textSize}</Text>
           </View>
         </TouchableOpacity>
 
@@ -89,7 +90,7 @@ export default function SettingsScreen() {
         >
           <HelpCircle color="#DC2626" size={48} strokeWidth={3} />
           <View style={styles.settingTextContainer}>
-            <Text style={styles.settingLabel}>Help</Text>
+            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24) }]}>Help</Text>
           </View>
         </TouchableOpacity>
       </ScrollView>

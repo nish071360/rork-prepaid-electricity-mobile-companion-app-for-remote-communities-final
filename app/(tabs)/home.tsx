@@ -10,12 +10,14 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { DollarSign, Bluetooth, RefreshCw, MapPin } from "lucide-react-native";
 import { useAppState } from "@/hooks/useAppState";
+import { useTextSize } from "@/hooks/useTextSize";
 
 
 
 export default function HomeScreen() {
   const { state } = useAppState();
   const insets = useSafeAreaInsets();
+  const { getScaledFontSize } = useTextSize();
   
   const daysRemaining = Math.ceil(state.creditRemaining / (state.rateNow / 100));
   const isLowCredit = state.creditRemaining < 20;
@@ -33,30 +35,30 @@ export default function HomeScreen() {
             strokeWidth={3}
           />
           
-          <Text style={styles.creditLabel}>Money Left</Text>
+          <Text style={[styles.creditLabel, { fontSize: getScaledFontSize(28) }]}>Money Left</Text>
           
-          <Text style={[styles.creditAmount, isLowCredit && styles.creditAmountLow]}>
+          <Text style={[styles.creditAmount, isLowCredit && styles.creditAmountLow, { fontSize: getScaledFontSize(72) }]}>
             ${state.creditRemaining.toFixed(0)}
           </Text>
           
-          <Text style={styles.daysRemaining}>
+          <Text style={[styles.daysRemaining, { fontSize: getScaledFontSize(24) }]}>
             About {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'} left
           </Text>
 
           {isLowCredit && (
             <View style={styles.warningBadge}>
-              <Text style={styles.warningText}>LOW - Add credit soon</Text>
+              <Text style={[styles.warningText, { fontSize: getScaledFontSize(20) }]}>LOW - Add credit soon</Text>
             </View>
           )}
         </View>
 
         <View style={styles.usageSection}>
-          <Text style={styles.usageLabel}>Today</Text>
-          <Text style={styles.usageValue}>{state.todayKwh.toFixed(1)} kWh</Text>
+          <Text style={[styles.usageLabel, { fontSize: getScaledFontSize(24) }]}>Today</Text>
+          <Text style={[styles.usageValue, { fontSize: getScaledFontSize(56) }]}>{state.todayKwh.toFixed(1)} kWh</Text>
         </View>
 
         <View style={styles.bluetoothSection}>
-          <Text style={styles.sectionTitle}>Device Connection</Text>
+          <Text style={[styles.sectionTitle, { fontSize: getScaledFontSize(20) }]}>Device Connection</Text>
           
           <View style={styles.connectionCard}>
             <View style={styles.connectionHeader}>
@@ -66,9 +68,10 @@ export default function HomeScreen() {
                 strokeWidth={2.5}
               />
               <View style={styles.connectionInfo}>
-                <Text style={styles.connectionLabel}>Bluetooth</Text>
+                <Text style={[styles.connectionLabel, { fontSize: getScaledFontSize(18) }]}>Bluetooth</Text>
                 <Text style={[
                   styles.connectionStatus,
+                  { fontSize: getScaledFontSize(22) },
                   state.bleConnected ? styles.connected : styles.disconnected
                 ]}>
                   {state.bleConnected ? "Connected" : "Disconnected"}
@@ -81,7 +84,7 @@ export default function HomeScreen() {
               onPress={() => router.push("/sensor-setup")}
               activeOpacity={0.8}
             >
-              <Text style={styles.setupButtonText}>
+              <Text style={[styles.setupButtonText, { fontSize: getScaledFontSize(16) }]}>
                 {state.bleConnected ? "Manage Device" : "Connect Device"}
               </Text>
             </TouchableOpacity>
@@ -93,7 +96,7 @@ export default function HomeScreen() {
             activeOpacity={0.8}
           >
             <RefreshCw color="#0284C7" size={24} strokeWidth={2.5} />
-            <Text style={styles.syncButtonText}>Sync Now</Text>
+            <Text style={[styles.syncButtonText, { fontSize: getScaledFontSize(20) }]}>Sync Now</Text>
           </TouchableOpacity>
         </View>
 
@@ -103,7 +106,7 @@ export default function HomeScreen() {
           activeOpacity={0.8}
         >
           <MapPin color="#FFFFFF" size={40} strokeWidth={3} />
-          <Text style={styles.rechargeText}>Recharge</Text>
+          <Text style={[styles.rechargeText, { fontSize: getScaledFontSize(32) }]}>Recharge</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>

@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AlertTriangle, DollarSign, Zap, Bell } from "lucide-react-native";
+import { useTextSize } from "@/hooks/useTextSize";
 
 type AlertType = "low_credit" | "predicted_runout" | "high_usage" | "connection_lost";
 
@@ -24,6 +25,7 @@ interface Alert {
 
 export default function AlertsScreen() {
   const insets = useSafeAreaInsets();
+  const { getScaledFontSize } = useTextSize();
   
   const [alerts] = useState<Alert[]>([
     {
@@ -94,17 +96,17 @@ export default function AlertsScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + 24 }]}
       >
-        <Text style={styles.title}>Alerts</Text>
+        <Text style={[styles.title, { fontSize: getScaledFontSize(36) }]}>Alerts</Text>
         
         {unreadCount > 0 && (
           <View style={styles.unreadBadge}>
-            <Text style={styles.unreadText}>{unreadCount} New</Text>
+            <Text style={[styles.unreadText, { fontSize: getScaledFontSize(20) }]}>{unreadCount} New</Text>
           </View>
         )}
 
         {alerts.length === 0 ? (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyText}>No alerts</Text>
+            <Text style={[styles.emptyText, { fontSize: getScaledFontSize(28) }]}>No alerts</Text>
           </View>
         ) : (
           alerts.map((alert) => {
@@ -123,9 +125,9 @@ export default function AlertsScreen() {
                   <Icon color={severityColor} size={48} strokeWidth={3} />
                 </View>
                 
-                <Text style={styles.alertTitle}>{alert.title}</Text>
-                <Text style={styles.alertMessage}>{alert.message}</Text>
-                <Text style={styles.alertTime}>{formatTimestamp(alert.timestamp)}</Text>
+                <Text style={[styles.alertTitle, { fontSize: getScaledFontSize(24) }]}>{alert.title}</Text>
+                <Text style={[styles.alertMessage, { fontSize: getScaledFontSize(20) }]}>{alert.message}</Text>
+                <Text style={[styles.alertTime, { fontSize: getScaledFontSize(18) }]}>{formatTimestamp(alert.timestamp)}</Text>
               </View>
             );
           })
