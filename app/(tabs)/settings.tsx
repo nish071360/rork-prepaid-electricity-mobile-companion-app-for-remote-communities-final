@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -14,37 +14,38 @@ import {
   HelpCircle,
 } from "lucide-react-native";
 import { useTextSize } from "@/hooks/useTextSize";
+import { useLanguage } from "@/hooks/useLanguage";
+import { Language } from "@/constants/translations";
 
 
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
-  const [selectedLanguage, setSelectedLanguage] = useState("English");
+  const { language, setLanguage, t } = useLanguage();
   const { textSize, setTextSize, getScaledFontSize } = useTextSize();
 
   const showLanguageOptions = () => {
     Alert.alert(
-      "Language",
-      "Choose language",
+      t.language,
+      t.chooseLanguage,
       [
-        { text: "English", onPress: () => setSelectedLanguage("English") },
-        { text: "Pitjantjatjara", onPress: () => setSelectedLanguage("Pitjantjatjara") },
-        { text: "Warlpiri", onPress: () => setSelectedLanguage("Warlpiri") },
-        { text: "Arrernte", onPress: () => setSelectedLanguage("Arrernte") },
-        { text: "Cancel", style: "cancel" },
+        { text: "English", onPress: () => setLanguage("English" as Language) },
+        { text: "Yumplatok", onPress: () => setLanguage("Yumplatok" as Language) },
+        { text: "Kriol", onPress: () => setLanguage("Kriol" as Language) },
+        { text: t.cancel, style: "cancel" },
       ]
     );
   };
 
   const showTextSizeOptions = () => {
     Alert.alert(
-      "Text Size",
-      "Choose text size",
+      t.textSize,
+      t.chooseTextSize,
       [
-        { text: "Small", onPress: () => setTextSize("Small") },
-        { text: "Medium", onPress: () => setTextSize("Medium") },
-        { text: "Large", onPress: () => setTextSize("Large") },
-        { text: "Cancel", style: "cancel" },
+        { text: t.small, onPress: () => setTextSize("Small") },
+        { text: t.medium, onPress: () => setTextSize("Medium") },
+        { text: t.large, onPress: () => setTextSize("Large") },
+        { text: t.cancel, style: "cancel" },
       ]
     );
   };
@@ -57,7 +58,7 @@ export default function SettingsScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + 24 }]}
       >
-        <Text style={[styles.title, { fontSize: getScaledFontSize(36) }]}>Settings</Text>
+        <Text style={[styles.title, { fontSize: getScaledFontSize(36) }]}>{t.settings}</Text>
 
         <TouchableOpacity
           style={styles.settingButton}
@@ -66,8 +67,8 @@ export default function SettingsScreen() {
         >
           <Globe color="#059669" size={48} strokeWidth={3} />
           <View style={styles.settingTextContainer}>
-            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24) }]}>Language</Text>
-            <Text style={[styles.settingValue, { fontSize: getScaledFontSize(28) }]}>{selectedLanguage}</Text>
+            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24) }]}>{t.language}</Text>
+            <Text style={[styles.settingValue, { fontSize: getScaledFontSize(28) }]}>{language}</Text>
           </View>
         </TouchableOpacity>
 
@@ -78,19 +79,19 @@ export default function SettingsScreen() {
         >
           <Type color="#0284C7" size={48} strokeWidth={3} />
           <View style={styles.settingTextContainer}>
-            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24) }]}>Text Size</Text>
-            <Text style={[styles.settingValue, { fontSize: getScaledFontSize(28) }]}>{textSize}</Text>
+            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24) }]}>{t.textSize}</Text>
+            <Text style={[styles.settingValue, { fontSize: getScaledFontSize(28) }]}>{textSize === "Small" ? t.small : textSize === "Medium" ? t.medium : t.large}</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.settingButton}
-          onPress={() => Alert.alert("Help", "Contact your community energy office for help")}
+          onPress={() => Alert.alert(t.help, t.helpMessage)}
           activeOpacity={0.8}
         >
           <HelpCircle color="#DC2626" size={48} strokeWidth={3} />
           <View style={styles.settingTextContainer}>
-            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24) }]}>Help</Text>
+            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24) }]}>{t.help}</Text>
           </View>
         </TouchableOpacity>
       </ScrollView>

@@ -9,6 +9,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppState } from "@/hooks/useAppState";
 import { useTextSize } from "@/hooks/useTextSize";
+import { useLanguage } from "@/hooks/useLanguage";
 
 type TimeRange = "day" | "week" | "month";
 
@@ -17,6 +18,7 @@ export default function HistoryScreen() {
   const { getHistoryData } = useAppState();
   const insets = useSafeAreaInsets();
   const { getScaledFontSize } = useTextSize();
+  const { t } = useLanguage();
   
   const historyData = getHistoryData(selectedRange);
 
@@ -34,7 +36,7 @@ export default function HistoryScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + 24 }]}
       >
-        <Text style={[styles.title, { fontSize: getScaledFontSize(36) }]}>Usage</Text>
+        <Text style={[styles.title, { fontSize: getScaledFontSize(36) }]}>{t.usage}</Text>
 
         <View style={styles.rangeSelector}>
           {(["day", "week", "month"] as TimeRange[]).map((range) => (
@@ -54,22 +56,22 @@ export default function HistoryScreen() {
                   selectedRange === range && styles.activeRangeButtonText,
                 ]}
               >
-                {range === "day" ? "Today" : range === "week" ? "Week" : "Month"}
+                {range === "day" ? t.today : range === "week" ? t.week : t.month}
               </Text>
             </TouchableOpacity>
           ))}
         </View>
 
         <View style={styles.statsCard}>
-          <Text style={[styles.statLabel, { fontSize: getScaledFontSize(22) }]}>Total</Text>
+          <Text style={[styles.statLabel, { fontSize: getScaledFontSize(22) }]}>{t.total}</Text>
           <Text style={[styles.statValue, { fontSize: getScaledFontSize(64) }]}>{getTotalUsage().toFixed(1)}</Text>
-          <Text style={[styles.statUnit, { fontSize: getScaledFontSize(28) }]}>kWh</Text>
+          <Text style={[styles.statUnit, { fontSize: getScaledFontSize(28) }]}>{t.kWh}</Text>
         </View>
 
         <View style={styles.statsCard}>
-          <Text style={[styles.statLabel, { fontSize: getScaledFontSize(22) }]}>Average per {selectedRange === "day" ? "hour" : "day"}</Text>
+          <Text style={[styles.statLabel, { fontSize: getScaledFontSize(22) }]}>{t.averagePer} {selectedRange === "day" ? t.hour : t.day}</Text>
           <Text style={[styles.statValue, { fontSize: getScaledFontSize(64) }]}>{getAverageUsage().toFixed(1)}</Text>
-          <Text style={[styles.statUnit, { fontSize: getScaledFontSize(28) }]}>kWh</Text>
+          <Text style={[styles.statUnit, { fontSize: getScaledFontSize(28) }]}>{t.kWh}</Text>
         </View>
       </ScrollView>
     </View>

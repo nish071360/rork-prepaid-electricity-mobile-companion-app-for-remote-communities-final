@@ -10,13 +10,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { X, RefreshCw, CheckCircle, AlertCircle, Wifi, WifiOff } from "lucide-react-native";
 import { useAppState } from "@/hooks/useAppState";
+import { useLanguage } from "@/hooks/useLanguage";
 
 type SyncStatus = "idle" | "syncing" | "success" | "error" | "offline";
 
 export default function SyncNowModal() {
+  const { t } = useLanguage();
   const [syncStatus, setSyncStatus] = useState<SyncStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
-  const [isOnline] = useState(Math.random() > 0.3); // 70% chance of being online
+  const [isOnline] = useState(Math.random() > 0.3);
   const { syncNow } = useAppState();
 
   useEffect(() => {
@@ -103,7 +105,7 @@ export default function SyncNowModal() {
         >
           <X color="#6B7280" size={24} />
         </TouchableOpacity>
-        <Text style={styles.title}>Sync Data</Text>
+        <Text style={styles.title}>{t.syncData}</Text>
         <View style={styles.placeholder} />
       </View>
 
@@ -119,7 +121,7 @@ export default function SyncNowModal() {
             )}
           </View>
           <Text style={[styles.connectionText, { color: isOnline ? "#10B981" : "#EF4444" }]}>
-            {isOnline ? "Connected" : "Offline"}
+            {isOnline ? t.connected : t.offline}
           </Text>
         </View>
 
@@ -130,11 +132,11 @@ export default function SyncNowModal() {
           </View>
           
           <Text style={[styles.statusTitle, { color: getStatusColor() }]}>
-            {syncStatus === "idle" && "Ready to sync"}
-            {syncStatus === "syncing" && "Syncing..."}
-            {syncStatus === "success" && "Sync complete"}
-            {syncStatus === "error" && "Sync failed"}
-            {syncStatus === "offline" && "Offline"}
+            {syncStatus === "idle" && t.readyToSync}
+            {syncStatus === "syncing" && t.syncing}
+            {syncStatus === "success" && t.syncComplete}
+            {syncStatus === "error" && t.syncFailed}
+            {syncStatus === "offline" && t.offline}
           </Text>
           
           {statusMessage && (
@@ -144,12 +146,12 @@ export default function SyncNowModal() {
 
         {/* Sync Info */}
         <View style={styles.syncInfo}>
-          <Text style={styles.syncInfoTitle}>What gets synced:</Text>
+          <Text style={styles.syncInfoTitle}>{t.whatGetsSynced}</Text>
           <View style={styles.syncInfoList}>
-            <Text style={styles.syncInfoItem}>• Energy usage data</Text>
-            <Text style={styles.syncInfoItem}>• Credit transactions</Text>
-            <Text style={styles.syncInfoItem}>• Alert preferences</Text>
-            <Text style={styles.syncInfoItem}>• Device settings</Text>
+            <Text style={styles.syncInfoItem}>• {t.energyUsageData}</Text>
+            <Text style={styles.syncInfoItem}>• {t.creditTransactions}</Text>
+            <Text style={styles.syncInfoItem}>• {t.alertPreferences}</Text>
+            <Text style={styles.syncInfoItem}>• {t.deviceSettings}</Text>
           </View>
         </View>
 
@@ -167,8 +169,8 @@ export default function SyncNowModal() {
               styles.syncButtonText,
               !canSync && styles.disabledButtonText
             ]}>
-              {syncStatus === "syncing" ? "Syncing..." : 
-               syncStatus === "offline" ? "Queue for Sync" : "Start Sync"}
+              {syncStatus === "syncing" ? t.syncing : 
+               syncStatus === "offline" ? t.queueForSync : t.startSync}
             </Text>
           </TouchableOpacity>
         )}
@@ -176,7 +178,7 @@ export default function SyncNowModal() {
         {/* Last Sync Info */}
         <View style={styles.lastSyncInfo}>
           <Text style={styles.lastSyncText}>
-            Last successful sync: 2 hours ago
+            {t.lastSuccessfulSync}
           </Text>
         </View>
       </View>

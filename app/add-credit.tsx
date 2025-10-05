@@ -12,8 +12,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { X, MapPin, Navigation } from "lucide-react-native";
 import * as Haptics from "expo-haptics";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export default function RechargeModal() {
+  const { t } = useLanguage();
+  
   const handleOpenMaps = async () => {
     if (Platform.OS !== "web") {
       await Haptics.selectionAsync();
@@ -57,7 +60,7 @@ export default function RechargeModal() {
           >
             <X color="#6B7280" size={24} />
           </TouchableOpacity>
-          <Text style={styles.title}>Recharge</Text>
+          <Text style={styles.title}>{t.recharge}</Text>
           <View style={styles.placeholder} />
         </View>
 
@@ -67,17 +70,16 @@ export default function RechargeModal() {
             <MapPin color="#10B981" size={80} strokeWidth={2.5} />
           </View>
 
-          <Text style={styles.mainTitle}>Find Charging Stations</Text>
+          <Text style={styles.mainTitle}>{t.findChargingStations}</Text>
           
           <Text style={styles.description}>
-            To recharge your account, visit a nearby charging station or hub. 
-            We&apos;ll help you find the closest locations.
+            {t.toRechargeYourAccount}
           </Text>
 
           <View style={styles.infoBox}>
             <Navigation color="#059669" size={24} />
             <Text style={styles.infoText}>
-              Tap the button below to open your maps app and find charging stations near you.
+              {t.tapButtonBelowToOpenMaps}
             </Text>
           </View>
 
@@ -87,11 +89,11 @@ export default function RechargeModal() {
             activeOpacity={0.8}
           >
             <MapPin color="#FFFFFF" size={24} />
-            <Text style={styles.mapsButtonText}>Open Maps</Text>
+            <Text style={styles.mapsButtonText}>{t.openMaps}</Text>
           </TouchableOpacity>
 
           <Text style={styles.footerText}>
-            Once at a charging station, follow the on-site instructions to add credit to your account.
+            {t.onceAtChargingStation}
           </Text>
         </View>
       </View>

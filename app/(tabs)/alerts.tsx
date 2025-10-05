@@ -8,6 +8,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AlertTriangle, DollarSign, Zap, Bell } from "lucide-react-native";
 import { useTextSize } from "@/hooks/useTextSize";
+import { useLanguage } from "@/hooks/useLanguage";
 
 type AlertType = "low_credit" | "predicted_runout" | "high_usage" | "connection_lost";
 
@@ -26,32 +27,33 @@ interface Alert {
 export default function AlertsScreen() {
   const insets = useSafeAreaInsets();
   const { getScaledFontSize } = useTextSize();
+  const { t } = useLanguage();
   
   const [alerts] = useState<Alert[]>([
     {
       id: "1",
       type: "low_credit",
-      title: "Low Credit Warning",
-      message: "Your credit balance is below $10. Consider topping up soon.",
-      timestamp: Date.now() - 2 * 60 * 60 * 1000, // 2 hours ago
+      title: t.lowCreditWarning,
+      message: t.lowCreditWarningMessage,
+      timestamp: Date.now() - 2 * 60 * 60 * 1000,
       severity: "medium",
       read: false,
     },
     {
       id: "2",
       type: "high_usage",
-      title: "High Usage Detected",
-      message: "Today's usage is 25% above your average. Check for any unusual appliance activity.",
-      timestamp: Date.now() - 4 * 60 * 60 * 1000, // 4 hours ago
+      title: t.highUsageDetected,
+      message: t.highUsageDetectedMessage,
+      timestamp: Date.now() - 4 * 60 * 60 * 1000,
       severity: "low",
       read: true,
     },
     {
       id: "3",
       type: "predicted_runout",
-      title: "Credit Running Low",
-      message: "At current usage rate, your credit will run out in 2 days.",
-      timestamp: Date.now() - 24 * 60 * 60 * 1000, // 1 day ago
+      title: t.creditRunningLow,
+      message: t.creditRunningLowMessage,
+      timestamp: Date.now() - 24 * 60 * 60 * 1000,
       severity: "high",
       read: true,
     },
@@ -65,10 +67,10 @@ export default function AlertsScreen() {
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const days = Math.floor(hours / 24);
     
-    if (hours < 1) return "Now";
-    if (hours < 24) return `${hours} hours ago`;
-    if (days === 1) return "Yesterday";
-    return `${days} days ago`;
+    if (hours < 1) return t.now;
+    if (hours < 24) return `${hours} ${t.hoursAgo}`;
+    if (days === 1) return t.yesterday;
+    return `${days} ${t.daysAgo}`;
   };
 
   const getSeverityColor = (severity: Alert["severity"]) => {
@@ -96,17 +98,17 @@ export default function AlertsScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + 24 }]}
       >
-        <Text style={[styles.title, { fontSize: getScaledFontSize(36) }]}>Alerts</Text>
+        <Text style={[styles.title, { fontSize: getScaledFontSize(36) }]}>{t.alerts}</Text>
         
         {unreadCount > 0 && (
           <View style={styles.unreadBadge}>
-            <Text style={[styles.unreadText, { fontSize: getScaledFontSize(20) }]}>{unreadCount} New</Text>
+            <Text style={[styles.unreadText, { fontSize: getScaledFontSize(20) }]}>{unreadCount} {t.newAlerts}</Text>
           </View>
         )}
 
         {alerts.length === 0 ? (
           <View style={styles.emptyState}>
-            <Text style={[styles.emptyText, { fontSize: getScaledFontSize(28) }]}>No alerts</Text>
+            <Text style={[styles.emptyText, { fontSize: getScaledFontSize(28) }]}>{t.noAlerts}</Text>
           </View>
         ) : (
           alerts.map((alert) => {

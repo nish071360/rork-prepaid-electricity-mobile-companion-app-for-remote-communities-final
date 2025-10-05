@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { X, Bluetooth, Search, CheckCircle, Signal } from "lucide-react-native";
 import * as Haptics from "expo-haptics";
+import { useLanguage } from "@/hooks/useLanguage";
 
 type SetupStep = "permissions" | "scanning" | "pairing" | "testing" | "complete";
 
@@ -31,6 +32,7 @@ const MOCK_DEVICES: BluetoothDevice[] = [
 ];
 
 export default function SensorSetupModal() {
+  const { t } = useLanguage();
   const [currentStep, setCurrentStep] = useState<SetupStep>("permissions");
   const [isScanning, setIsScanning] = useState(false);
   const [devices, setDevices] = useState<BluetoothDevice[]>([]);
@@ -39,10 +41,10 @@ export default function SensorSetupModal() {
   const [isTesting, setIsTesting] = useState(false);
 
   const getSignalStrength = (rssi: number) => {
-    if (rssi > -50) return { strength: "Excellent", color: "#10B981" };
-    if (rssi > -60) return { strength: "Good", color: "#F59E0B" };
-    if (rssi > -70) return { strength: "Fair", color: "#EF4444" };
-    return { strength: "Poor", color: "#6B7280" };
+    if (rssi > -50) return { strength: t.excellent, color: "#10B981" };
+    if (rssi > -60) return { strength: t.good, color: "#F59E0B" };
+    if (rssi > -70) return { strength: t.fair, color: "#EF4444" };
+    return { strength: t.poor, color: "#6B7280" };
   };
 
   const handleEnableBluetooth = async () => {
@@ -151,7 +153,7 @@ export default function SensorSetupModal() {
           </View>
         </View>
         {item.isConnectable && (
-          <Text style={styles.connectText}>Tap to connect</Text>
+          <Text style={styles.connectText}>{t.tapToConnect}</Text>
         )}
       </TouchableOpacity>
     );
@@ -165,15 +167,15 @@ export default function SensorSetupModal() {
             <View style={styles.stepIcon}>
               <Bluetooth color="#10B981" size={48} />
             </View>
-            <Text style={styles.stepTitle}>Enable Bluetooth</Text>
+            <Text style={styles.stepTitle}>{t.enableBluetooth}</Text>
             <Text style={styles.stepDescription}>
-              We need Bluetooth access to connect to your energy monitor sensor.
+              {t.weNeedBluetoothAccess}
             </Text>
             <TouchableOpacity
               style={styles.primaryButton}
               onPress={handleEnableBluetooth}
             >
-              <Text style={styles.primaryButtonText}>Enable Bluetooth</Text>
+              <Text style={styles.primaryButtonText}>{t.enableBluetooth}</Text>
             </TouchableOpacity>
           </View>
         );
@@ -185,16 +187,16 @@ export default function SensorSetupModal() {
               <View style={styles.stepIcon}>
                 <Search color="#10B981" size={48} />
               </View>
-              <Text style={styles.stepTitle}>Scanning for Devices</Text>
+              <Text style={styles.stepTitle}>{t.scanningForDevices}</Text>
               <Text style={styles.stepDescription}>
-                Make sure your energy monitor is powered on and nearby.
+                {t.makeSureYourEnergyMonitor}
               </Text>
             </View>
 
             {isScanning && (
               <View style={styles.scanningIndicator}>
                 <ActivityIndicator size="large" color="#10B981" />
-                <Text style={styles.scanningText}>Searching for devices...</Text>
+                <Text style={styles.scanningText}>{t.searchingForDevices}</Text>
               </View>
             )}
 
@@ -212,7 +214,7 @@ export default function SensorSetupModal() {
               disabled={isScanning}
             >
               <Text style={styles.secondaryButtonText}>
-                {isScanning ? "Scanning..." : "Scan Again"}
+                {isScanning ? t.syncing : t.scanAgain}
               </Text>
             </TouchableOpacity>
           </View>
@@ -229,21 +231,21 @@ export default function SensorSetupModal() {
               )}
             </View>
             <Text style={styles.stepTitle}>
-              {isConnecting ? "Connecting..." : "Connected"}
+              {isConnecting ? t.connecting : t.connected}
             </Text>
             <Text style={styles.stepDescription}>
               {isConnecting 
-                ? `Establishing connection to ${selectedDevice?.name}`
-                : `Successfully connected to ${selectedDevice?.name}`
+                ? `${t.establishingConnection} ${selectedDevice?.name}`
+                : `${t.successfullyConnected} ${selectedDevice?.name}`
               }
             </Text>
             {selectedDevice && (
               <View style={styles.deviceDetails}>
                 <Text style={styles.deviceDetailsText}>
-                  Device: {selectedDevice.name}
+                  {t.device}: {selectedDevice.name}
                 </Text>
                 <Text style={styles.deviceDetailsText}>
-                  Signal: {getSignalStrength(selectedDevice.rssi).strength}
+                  {t.signal}: {getSignalStrength(selectedDevice.rssi).strength}
                 </Text>
               </View>
             )}
@@ -261,19 +263,19 @@ export default function SensorSetupModal() {
               )}
             </View>
             <Text style={styles.stepTitle}>
-              {isTesting ? "Testing Connection" : "Test Complete"}
+              {isTesting ? t.testingConnection : t.testComplete}
             </Text>
             <Text style={styles.stepDescription}>
               {isTesting 
-                ? "Reading data from your energy monitor..."
-                : "Successfully received data from your sensor!"
+                ? t.readingDataFromMonitor
+                : t.successfullyReceivedData
               }
             </Text>
             {!isTesting && (
               <View style={styles.testResults}>
-                <Text style={styles.testResultText}>✓ Connection established</Text>
-                <Text style={styles.testResultText}>✓ Data stream active</Text>
-                <Text style={styles.testResultText}>✓ Current reading: 2.4 kW</Text>
+                <Text style={styles.testResultText}>✓ {t.connectionEstablished}</Text>
+                <Text style={styles.testResultText}>✓ {t.dataStreamActive}</Text>
+                <Text style={styles.testResultText}>✓ {t.currentReading}</Text>
               </View>
             )}
           </View>
@@ -285,15 +287,15 @@ export default function SensorSetupModal() {
             <View style={styles.stepIcon}>
               <CheckCircle color="#10B981" size={48} />
             </View>
-            <Text style={styles.stepTitle}>Setup Complete!</Text>
+            <Text style={styles.stepTitle}>{t.setupComplete}</Text>
             <Text style={styles.stepDescription}>
-              Your energy monitor is now connected and ready to track your usage.
+              {t.yourEnergyMonitorIsConnected}
             </Text>
             <TouchableOpacity
               style={styles.primaryButton}
               onPress={() => router.back()}
             >
-              <Text style={styles.primaryButtonText}>Done</Text>
+              <Text style={styles.primaryButtonText}>{t.done}</Text>
             </TouchableOpacity>
           </View>
         );
@@ -313,7 +315,7 @@ export default function SensorSetupModal() {
         >
           <X color="#6B7280" size={24} />
         </TouchableOpacity>
-        <Text style={styles.title}>Sensor Setup</Text>
+        <Text style={styles.title}>{t.sensorSetup}</Text>
         <View style={styles.placeholder} />
       </View>
 
@@ -335,12 +337,12 @@ export default function SensorSetupModal() {
           />
         </View>
         <Text style={styles.progressText}>
-          Step {
+          {t.step} {
             currentStep === "permissions" ? 1 :
             currentStep === "scanning" ? 2 :
             currentStep === "pairing" ? 3 :
             currentStep === "testing" ? 4 : 5
-          } of 5
+          } {t.of} 5
         </Text>
       </View>
 
