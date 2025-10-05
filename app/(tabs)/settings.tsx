@@ -19,7 +19,7 @@ import {
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const [selectedLanguage, setSelectedLanguage] = useState("English");
-  const [selectedTextSize, setSelectedTextSize] = useState("Medium");
+  const [selectedTextSize, setSelectedTextSize] = useState("Large");
 
   const showLanguageOptions = () => {
     Alert.alert(
@@ -40,9 +40,9 @@ export default function SettingsScreen() {
       "Text Size",
       "Choose text size",
       [
-        { text: "Small", onPress: () => setSelectedTextSize("Small") },
-        { text: "Medium", onPress: () => setSelectedTextSize("Medium") },
         { text: "Large", onPress: () => setSelectedTextSize("Large") },
+        { text: "Extra Large", onPress: () => setSelectedTextSize("Extra Large") },
+        { text: "Huge", onPress: () => setSelectedTextSize("Huge") },
         { text: "Cancel", style: "cancel" },
       ]
     );

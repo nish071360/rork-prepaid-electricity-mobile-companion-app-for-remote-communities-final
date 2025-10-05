@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Prepaid Electricity Mobile Companion App for Remote Communities Final",
-    "slug": "prepaid-electricity-mobile-companion-app-remote-communities-8ib0aq7x",
+    "name": "Prepaid Electricity Mobile Companion App for Remote Communities Clone",
+    "slug": "prepaid-electricity-mobile-companion-app-remote-communities-j1b6gzic",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -15,14 +15,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "app.rork.prepaid-electricity-mobile-companion-app-remote-communities-8ib0aq7x"
+      "bundleIdentifier": "app.rork.prepaid-electricity-mobile-companion-app-remote-communities-j1b6gzic"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "app.rork.prepaid-electricity-mobile-companion-app-remote-communities-8ib0aq7x",
+      "package": "app.rork.prepaid-electricity-mobile-companion-app-remote-communities-j1b6gzic",
       "permissions": [
         "android.permission.VIBRATE"
       ]
@@ -36,7 +36,8 @@
         {
           "origin": "https://rork.com/"
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true
