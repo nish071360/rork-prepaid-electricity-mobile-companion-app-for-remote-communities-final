@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { addTransaction, getBalance, initDB } from "./useDatabase";
+import { initDB } from "./useDatabase";
+import { addTransaction, getBalance } from "./useTransaction";
 
 interface EnergyRecord {
   ts: number;
