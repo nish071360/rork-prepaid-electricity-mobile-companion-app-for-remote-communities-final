@@ -6,6 +6,7 @@ import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { TextSizeProvider } from "@/hooks/useTextSize";
+import { LanguageProvider } from "@/hooks/useLanguage";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -55,11 +56,13 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
-        <TextSizeProvider>
-          <GestureHandlerRootView style={styles.container}>
-            <RootLayoutNav />
-          </GestureHandlerRootView>
-        </TextSizeProvider>
+        <LanguageProvider>
+          <TextSizeProvider>
+            <GestureHandlerRootView style={styles.container}>
+              <RootLayoutNav />
+            </GestureHandlerRootView>
+          </TextSizeProvider>
+        </LanguageProvider>
       </SafeAreaProvider>
     </QueryClientProvider>
   );
