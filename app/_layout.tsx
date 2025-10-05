@@ -7,6 +7,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { TextSizeProvider } from "@/hooks/useTextSize";
 import { LanguageProvider } from "@/hooks/useLanguage";
+import { trpc, trpcClient } from "@/lib/trpc";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -54,17 +55,19 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <SafeAreaProvider>
-        <LanguageProvider>
-          <TextSizeProvider>
-            <GestureHandlerRootView style={styles.container}>
-              <RootLayoutNav />
-            </GestureHandlerRootView>
-          </TextSizeProvider>
-        </LanguageProvider>
-      </SafeAreaProvider>
-    </QueryClientProvider>
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaProvider>
+          <LanguageProvider>
+            <TextSizeProvider>
+              <GestureHandlerRootView style={styles.container}>
+                <RootLayoutNav />
+              </GestureHandlerRootView>
+            </TextSizeProvider>
+          </LanguageProvider>
+        </SafeAreaProvider>
+      </QueryClientProvider>
+    </trpc.Provider>
   );
 }
 
