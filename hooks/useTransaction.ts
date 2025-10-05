@@ -1,7 +1,6 @@
 import { CreditTransaction } from "./useAppState";
 import { SQLiteDatabase } from "./useDatabase";
 
-// ✅ Add transaction
 export async function addTransaction(
   db: SQLiteDatabase,
   delta: number,
@@ -9,6 +8,11 @@ export async function addTransaction(
   note?: string,
   date?: number
 ): Promise<number> {
+  if (!db) {
+    console.warn('Database not available on web');
+    return 0;
+  }
+
   const ts = date || Date.now();
 
   const result = await db.runAsync(
@@ -19,21 +23,29 @@ export async function addTransaction(
   return result.lastInsertRowId;
 }
 
-// ✅ Get all transactions
 export async function getTransactions(
   db: SQLiteDatabase
 ): Promise<CreditTransaction[]> {
+  if (!db) {
+    console.warn('Database not available on web');
+    return [];
+  }
+
   const rows = await db.getAllAsync<CreditTransaction>(
     "SELECT * FROM credit_transactions ORDER BY ts DESC;"
   );
   return rows;
 }
 
-// ✅ Get single transaction by ID
 export async function getTransactionById(
   db: SQLiteDatabase,
   id: number
 ): Promise<CreditTransaction | null> {
+  if (!db) {
+    console.warn('Database not available on web');
+    return null;
+  }
+
   const row = await db.getFirstAsync<CreditTransaction>(
     "SELECT * FROM credit_transactions WHERE id = ?;",
     [id]
@@ -41,12 +53,16 @@ export async function getTransactionById(
   return row ?? null;
 }
 
-// ✅ Update transaction
 export async function updateTransaction(
   db: SQLiteDatabase,
   id: number,
   fields: Partial<Pick<CreditTransaction, "delta" | "note">>
 ): Promise<void> {
+  if (!db) {
+    console.warn('Database not available on web');
+    return;
+  }
+
   const updates: string[] = [];
   const values: any[] = [];
 
@@ -69,16 +85,24 @@ export async function updateTransaction(
   );
 }
 
-// ✅ Delete transaction
 export async function deleteTransaction(
   db: SQLiteDatabase,
   id: number
 ): Promise<void> {
+  if (!db) {
+    console.warn('Database not available on web');
+    return;
+  }
+
   await db.runAsync("DELETE FROM credit_transactions WHERE id = ?;", [id]);
 }
 
-// ✅ Get current balance
 export async function getBalance(db: SQLiteDatabase): Promise<number> {
+  if (!db) {
+    console.warn('Database not available on web');
+    return 0;
+  }
+
   const row = await db.getFirstAsync<{ balance: number | null }>(
     "SELECT SUM(delta) as balance FROM credit_transactions;"
   );

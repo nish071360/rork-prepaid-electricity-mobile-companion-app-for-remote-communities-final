@@ -1,9 +1,14 @@
+import { Platform } from "react-native";
 import * as SQLite from "expo-sqlite";
 
-export type SQLiteDatabase = SQLite.SQLiteDatabase;
+export type SQLiteDatabase = SQLite.SQLiteDatabase | null;
 
-// ✅ Open or create the database
 export async function initDB(): Promise<SQLiteDatabase> {
+  if (Platform.OS === 'web') {
+    console.log('SQLite not supported on web, using AsyncStorage fallback');
+    return null;
+  }
+
   const db = await SQLite.openDatabaseAsync("app.db");
 
   await db.execAsync(`
