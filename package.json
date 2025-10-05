@@ -45,6 +45,7 @@
     "react-native-svg": "15.11.2",
     "react-native-svg-charts": "^5.4.0",
     "react-native-web": "^0.20.0",
+    "wa-sqlite": "^1.0.0",
     "zustand": "^5.0.2"
   },
   "devDependencies": {

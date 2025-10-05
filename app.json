@@ -15,7 +15,18 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "app.rork.prepaid-electricity-mobile-companion-app-remote-communities-j1b6gzic"
+      "bundleIdentifier": "app.rork.prepaid-electricity-mobile-companion-app-remote-communities-j1b6gzic",
+      "entitlements": {
+        "com": {
+          "apple": {
+            "security": {
+              "application-groups": [
+                "group.com.myapp"
+              ]
+            }
+          }
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -37,7 +48,22 @@
           "origin": "https://rork.com/"
         }
       ],
-      "expo-sqlite"
+      [
+        "expo-sqlite",
+        {
+          "enableFTS": true,
+          "useSQLCipher": true,
+          "android": {
+            "enableFTS": false,
+            "useSQLCipher": false
+          },
+          "ios": {
+            "customBuildFlags": [
+              "-DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_SNAPSHOT=1"
+            ]
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
