@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { DollarSign, Plus } from "lucide-react-native";
+import { DollarSign, Bluetooth, RefreshCw, MapPin } from "lucide-react-native";
 import { useAppState } from "@/hooks/useAppState";
 
 
@@ -55,13 +55,55 @@ export default function HomeScreen() {
           <Text style={styles.usageValue}>{state.todayKwh.toFixed(1)} kWh</Text>
         </View>
 
+        <View style={styles.bluetoothSection}>
+          <Text style={styles.sectionTitle}>Device Connection</Text>
+          
+          <View style={styles.connectionCard}>
+            <View style={styles.connectionHeader}>
+              <Bluetooth 
+                color={state.bleConnected ? "#10B981" : "#6B7280"} 
+                size={32} 
+                strokeWidth={2.5}
+              />
+              <View style={styles.connectionInfo}>
+                <Text style={styles.connectionLabel}>Bluetooth</Text>
+                <Text style={[
+                  styles.connectionStatus,
+                  state.bleConnected ? styles.connected : styles.disconnected
+                ]}>
+                  {state.bleConnected ? "Connected" : "Disconnected"}
+                </Text>
+              </View>
+            </View>
+            
+            <TouchableOpacity
+              style={styles.setupButton}
+              onPress={() => router.push("/sensor-setup")}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.setupButtonText}>
+                {state.bleConnected ? "Manage Device" : "Connect Device"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity
+            style={styles.syncButton}
+            onPress={() => router.push("/sync-now")}
+            activeOpacity={0.8}
+          >
+            <RefreshCw color="#0284C7" size={24} strokeWidth={2.5} />
+            <Text style={styles.syncButtonText}>Sync Now</Text>
+          </TouchableOpacity>
+        </View>
+
         <TouchableOpacity
-          style={styles.addCreditButton}
+          style={styles.rechargeButton}
           onPress={() => router.push("/add-credit")}
           activeOpacity={0.8}
         >
-          <Plus color="#FFFFFF" size={40} strokeWidth={3} />
-          <Text style={styles.addCreditText}>Add Credit</Text>
+          <MapPin color="#FFFFFF" size={40} strokeWidth={3} />
+          <Text style={styles.rechargeText}>Recharge</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -143,7 +185,79 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     color: "#0284C7",
   },
-  addCreditButton: {
+  bluetoothSection: {
+    gap: 16,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#111827",
+    marginBottom: 4,
+  },
+  connectionCard: {
+    backgroundColor: "#F9FAFB",
+    borderRadius: 20,
+    borderWidth: 3,
+    borderColor: "#E5E7EB",
+    padding: 20,
+    gap: 16,
+  },
+  connectionHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+  },
+  connectionInfo: {
+    flex: 1,
+  },
+  connectionLabel: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#374151",
+    marginBottom: 4,
+  },
+  connectionStatus: {
+    fontSize: 22,
+    fontWeight: "800",
+  },
+  connected: {
+    color: "#10B981",
+  },
+  disconnected: {
+    color: "#6B7280",
+  },
+  setupButton: {
+    backgroundColor: "#FFFFFF",
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: "#E5E7EB",
+    alignItems: "center",
+  },
+  setupButtonText: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#374151",
+  },
+  syncButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,
+    paddingVertical: 18,
+    paddingHorizontal: 24,
+    backgroundColor: "#F0F9FF",
+    borderRadius: 16,
+    borderWidth: 3,
+    borderColor: "#BAE6FD",
+  },
+  syncButtonText: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#0284C7",
+  },
+  rechargeButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -159,7 +273,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 8,
   },
-  addCreditText: {
+  rechargeText: {
     fontSize: 32,
     fontWeight: "800",
     color: "#FFFFFF",
