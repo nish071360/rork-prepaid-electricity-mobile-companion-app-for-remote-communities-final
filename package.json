@@ -3,9 +3,9 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "bunx rork start -p svb2fncua2zc98ib0aq7x --tunnel",
-    "start-web": "bunx rork start -p svb2fncua2zc98ib0aq7x --web --tunnel",
-    "start-web-dev": "DEBUG=expo* bunx rork start -p svb2fncua2zc98ib0aq7x --web --tunnel",
+    "start": "bunx rork start -p s168xu8inqo3vj1b6gzic --tunnel",
+    "start-web": "bunx rork start -p s168xu8inqo3vj1b6gzic --web --tunnel",
+    "start-web-dev": "DEBUG=expo* bunx rork start -p s168xu8inqo3vj1b6gzic --web --tunnel",
     "lint": "expo lint"
   },
   "dependencies": {
@@ -15,6 +15,7 @@
     "@react-navigation/native": "^7.1.6",
     "@stardazed/streams-text-encoding": "^1.0.2",
     "@tanstack/react-query": "^5.83.0",
+    "@types/react-native-sqlite-storage": "^6.0.5",
     "@ungap/structured-clone": "^1.3.0",
     "expo": "^53.0.4",
     "expo-blur": "~14.1.4",
@@ -28,6 +29,7 @@
     "expo-location": "~18.1.4",
     "expo-router": "~5.0.3",
     "expo-splash-screen": "~0.30.7",
+    "expo-sqlite": "~15.2.14",
     "expo-status-bar": "~2.2.3",
     "expo-symbols": "~0.4.4",
     "expo-system-ui": "~5.0.6",
