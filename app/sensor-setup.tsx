@@ -14,6 +14,7 @@ import { router } from "expo-router";
 import { X, Bluetooth, Search, CheckCircle, Signal } from "lucide-react-native";
 import * as Haptics from "expo-haptics";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTheme } from "@/hooks/useTheme";
 
 type SetupStep = "permissions" | "scanning" | "pairing" | "testing" | "complete";
 
@@ -33,6 +34,7 @@ const MOCK_DEVICES: BluetoothDevice[] = [
 
 export default function SensorSetupModal() {
   const { t } = useLanguage();
+  const { colors } = useTheme();
   const [currentStep, setCurrentStep] = useState<SetupStep>("permissions");
   const [isScanning, setIsScanning] = useState(false);
   const [devices, setDevices] = useState<BluetoothDevice[]>([]);
@@ -306,25 +308,26 @@ export default function SensorSetupModal() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.surface }]}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: colors.background, borderBottomColor: colors.surfaceBorder }]}>
         <TouchableOpacity
           style={styles.closeButton}
           onPress={() => router.back()}
         >
-          <X color="#6B7280" size={24} />
+          <X color={colors.textTertiary} size={24} />
         </TouchableOpacity>
-        <Text style={styles.title}>{t.sensorSetup}</Text>
+        <Text style={[styles.title, { color: colors.text }]}>{t.sensorSetup}</Text>
         <View style={styles.placeholder} />
       </View>
 
       {/* Progress Indicator */}
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBar}>
+      <View style={[styles.progressContainer, { backgroundColor: colors.background, borderBottomColor: colors.surfaceBorder }]}>
+        <View style={[styles.progressBar, { backgroundColor: colors.surfaceBorder }]}>
           <View 
             style={[
               styles.progressFill,
+              { backgroundColor: colors.success },
               { 
                 width: `${
                   currentStep === "permissions" ? 20 :
@@ -336,7 +339,7 @@ export default function SensorSetupModal() {
             ]} 
           />
         </View>
-        <Text style={styles.progressText}>
+        <Text style={[styles.progressText, { color: colors.textTertiary }]}>
           {t.step} {
             currentStep === "permissions" ? 1 :
             currentStep === "scanning" ? 2 :
@@ -357,7 +360,6 @@ export default function SensorSetupModal() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
   },
   header: {
     flexDirection: "row",
@@ -366,8 +368,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
-    backgroundColor: "#FFFFFF",
   },
   closeButton: {
     width: 40,
@@ -378,7 +378,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#111827",
   },
   placeholder: {
     width: 40,
@@ -386,24 +385,19 @@ const styles = StyleSheet.create({
   progressContainer: {
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: "#FFFFFF",
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
   },
   progressBar: {
     height: 4,
-    backgroundColor: "#E5E7EB",
     borderRadius: 2,
     marginBottom: 8,
   },
   progressFill: {
     height: "100%",
-    backgroundColor: "#10B981",
     borderRadius: 2,
   },
   progressText: {
     fontSize: 12,
-    color: "#6B7280",
     textAlign: "center",
   },
   content: {

@@ -15,6 +15,7 @@ import {
 } from "lucide-react-native";
 import { useTextSize } from "@/hooks/useTextSize";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTheme } from "@/hooks/useTheme";
 import { Language } from "@/constants/translations";
 
 
@@ -23,6 +24,7 @@ export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const { language, setLanguage, t } = useLanguage();
   const { textSize, setTextSize, getScaledFontSize } = useTextSize();
+  const { colors } = useTheme();
 
   const showLanguageOptions = () => {
     Alert.alert(
@@ -53,45 +55,45 @@ export default function SettingsScreen() {
 
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView 
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + 24 }]}
       >
-        <Text style={[styles.title, { fontSize: getScaledFontSize(36) }]}>{t.settings}</Text>
+        <Text style={[styles.title, { fontSize: getScaledFontSize(36), color: colors.text }]}>{t.settings}</Text>
 
         <TouchableOpacity
-          style={styles.settingButton}
+          style={[styles.settingButton, { backgroundColor: colors.surface, borderColor: colors.surfaceBorder }]}
           onPress={showLanguageOptions}
           activeOpacity={0.8}
         >
-          <Globe color="#059669" size={48} strokeWidth={3} />
+          <Globe color={colors.success} size={48} strokeWidth={3} />
           <View style={styles.settingTextContainer}>
-            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24) }]}>{t.language}</Text>
-            <Text style={[styles.settingValue, { fontSize: getScaledFontSize(28) }]}>{language}</Text>
+            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24), color: colors.textSecondary }]}>{t.language}</Text>
+            <Text style={[styles.settingValue, { fontSize: getScaledFontSize(28), color: colors.text }]}>{language}</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.settingButton}
+          style={[styles.settingButton, { backgroundColor: colors.surface, borderColor: colors.surfaceBorder }]}
           onPress={showTextSizeOptions}
           activeOpacity={0.8}
         >
-          <Type color="#0284C7" size={48} strokeWidth={3} />
+          <Type color={colors.primary} size={48} strokeWidth={3} />
           <View style={styles.settingTextContainer}>
-            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24) }]}>{t.textSize}</Text>
-            <Text style={[styles.settingValue, { fontSize: getScaledFontSize(28) }]}>{textSize === "Small" ? t.small : textSize === "Medium" ? t.medium : t.large}</Text>
+            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24), color: colors.textSecondary }]}>{t.textSize}</Text>
+            <Text style={[styles.settingValue, { fontSize: getScaledFontSize(28), color: colors.text }]}>{textSize === "Small" ? t.small : textSize === "Medium" ? t.medium : t.large}</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.settingButton}
+          style={[styles.settingButton, { backgroundColor: colors.surface, borderColor: colors.surfaceBorder }]}
           onPress={() => Alert.alert(t.help, t.helpMessage)}
           activeOpacity={0.8}
         >
-          <HelpCircle color="#DC2626" size={48} strokeWidth={3} />
+          <HelpCircle color={colors.error} size={48} strokeWidth={3} />
           <View style={styles.settingTextContainer}>
-            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24) }]}>{t.help}</Text>
+            <Text style={[styles.settingLabel, { fontSize: getScaledFontSize(24), color: colors.textSecondary }]}>{t.help}</Text>
           </View>
         </TouchableOpacity>
       </ScrollView>
@@ -102,7 +104,6 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
   },
   scrollContent: {
     padding: 24,
@@ -111,7 +112,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 36,
     fontWeight: "900",
-    color: "#111827",
     marginBottom: 16,
   },
   settingButton: {
@@ -120,10 +120,8 @@ const styles = StyleSheet.create({
     gap: 24,
     paddingVertical: 28,
     paddingHorizontal: 28,
-    backgroundColor: "#F9FAFB",
     borderRadius: 20,
     borderWidth: 3,
-    borderColor: "#E5E7EB",
     minHeight: 100,
   },
   settingTextContainer: {
@@ -132,12 +130,10 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#374151",
     marginBottom: 4,
   },
   settingValue: {
     fontSize: 28,
     fontWeight: "900",
-    color: "#111827",
   },
 });

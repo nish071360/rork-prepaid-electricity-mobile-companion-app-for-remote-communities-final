@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppState } from "@/hooks/useAppState";
 import { useTextSize } from "@/hooks/useTextSize";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTheme } from "@/hooks/useTheme";
 
 type TimeRange = "day" | "week" | "month";
 
@@ -19,6 +20,7 @@ export default function HistoryScreen() {
   const insets = useSafeAreaInsets();
   const { getScaledFontSize } = useTextSize();
   const { t } = useLanguage();
+  const { colors } = useTheme();
   
   const historyData = getHistoryData(selectedRange);
 
@@ -31,20 +33,20 @@ export default function HistoryScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView 
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + 24 }]}
       >
-        <Text style={[styles.title, { fontSize: getScaledFontSize(36) }]}>{t.usage}</Text>
+        <Text style={[styles.title, { fontSize: getScaledFontSize(36), color: colors.text }]}>{t.usage}</Text>
 
-        <View style={styles.rangeSelector}>
+        <View style={[styles.rangeSelector, { backgroundColor: colors.surface }]}>
           {(["day", "week", "month"] as TimeRange[]).map((range) => (
             <TouchableOpacity
               key={range}
               style={[
                 styles.rangeButton,
-                selectedRange === range && styles.activeRangeButton,
+                selectedRange === range && { backgroundColor: colors.success, shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 4 },
               ]}
               onPress={() => setSelectedRange(range)}
               activeOpacity={0.8}
@@ -52,8 +54,7 @@ export default function HistoryScreen() {
               <Text
                 style={[
                   styles.rangeButtonText,
-                  { fontSize: getScaledFontSize(22) },
-                  selectedRange === range && styles.activeRangeButtonText,
+                  { fontSize: getScaledFontSize(22), color: selectedRange === range ? "#FFFFFF" : colors.textTertiary },
                 ]}
               >
                 {range === "day" ? t.today : range === "week" ? t.week : t.month}
@@ -62,16 +63,16 @@ export default function HistoryScreen() {
           ))}
         </View>
 
-        <View style={styles.statsCard}>
-          <Text style={[styles.statLabel, { fontSize: getScaledFontSize(22) }]}>{t.total}</Text>
-          <Text style={[styles.statValue, { fontSize: getScaledFontSize(64) }]}>{getTotalUsage().toFixed(1)}</Text>
-          <Text style={[styles.statUnit, { fontSize: getScaledFontSize(28) }]}>{t.kWh}</Text>
+        <View style={[styles.statsCard, { backgroundColor: colors.primaryLight, borderColor: colors.primaryBorder }]}>
+          <Text style={[styles.statLabel, { fontSize: getScaledFontSize(22), color: colors.info }]}>{t.total}</Text>
+          <Text style={[styles.statValue, { fontSize: getScaledFontSize(64), color: colors.primary }]}>{getTotalUsage().toFixed(1)}</Text>
+          <Text style={[styles.statUnit, { fontSize: getScaledFontSize(28), color: colors.info }]}>{t.kWh}</Text>
         </View>
 
-        <View style={styles.statsCard}>
-          <Text style={[styles.statLabel, { fontSize: getScaledFontSize(22) }]}>{t.averagePer} {selectedRange === "day" ? t.hour : t.day}</Text>
-          <Text style={[styles.statValue, { fontSize: getScaledFontSize(64) }]}>{getAverageUsage().toFixed(1)}</Text>
-          <Text style={[styles.statUnit, { fontSize: getScaledFontSize(28) }]}>{t.kWh}</Text>
+        <View style={[styles.statsCard, { backgroundColor: colors.primaryLight, borderColor: colors.primaryBorder }]}>
+          <Text style={[styles.statLabel, { fontSize: getScaledFontSize(22), color: colors.info }]}>{t.averagePer} {selectedRange === "day" ? t.hour : t.day}</Text>
+          <Text style={[styles.statValue, { fontSize: getScaledFontSize(64), color: colors.primary }]}>{getAverageUsage().toFixed(1)}</Text>
+          <Text style={[styles.statUnit, { fontSize: getScaledFontSize(28), color: colors.info }]}>{t.kWh}</Text>
         </View>
       </ScrollView>
     </View>
@@ -81,7 +82,6 @@ export default function HistoryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
   },
   scrollContent: {
     padding: 24,
@@ -90,12 +90,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 36,
     fontWeight: "900",
-    color: "#111827",
     marginBottom: 8,
   },
   rangeSelector: {
     flexDirection: "row",
-    backgroundColor: "#F3F4F6",
     borderRadius: 16,
     padding: 6,
     gap: 6,
@@ -108,46 +106,29 @@ const styles = StyleSheet.create({
     minHeight: 72,
     justifyContent: "center",
   },
-  activeRangeButton: {
-    backgroundColor: "#059669",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 4,
-  },
   rangeButtonText: {
     fontSize: 22,
     fontWeight: "700",
-    color: "#6B7280",
-  },
-  activeRangeButtonText: {
-    color: "#FFFFFF",
   },
   statsCard: {
-    backgroundColor: "#F0F9FF",
     padding: 32,
     borderRadius: 24,
     alignItems: "center",
     borderWidth: 3,
-    borderColor: "#BAE6FD",
   },
   statLabel: {
     fontSize: 22,
     fontWeight: "700",
-    color: "#0369A1",
     marginBottom: 16,
     textAlign: "center",
   },
   statValue: {
     fontSize: 64,
     fontWeight: "900",
-    color: "#0284C7",
     marginBottom: 8,
   },
   statUnit: {
     fontSize: 28,
     fontWeight: "700",
-    color: "#0369A1",
   },
 });

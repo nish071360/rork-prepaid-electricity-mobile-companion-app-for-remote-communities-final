@@ -11,11 +11,13 @@ import { router } from "expo-router";
 import { X, RefreshCw, CheckCircle, AlertCircle, Wifi, WifiOff } from "lucide-react-native";
 import { useAppState } from "@/hooks/useAppState";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTheme } from "@/hooks/useTheme";
 
 type SyncStatus = "idle" | "syncing" | "success" | "error" | "offline";
 
 export default function SyncNowModal() {
   const { t } = useLanguage();
+  const { colors } = useTheme();
   const [syncStatus, setSyncStatus] = useState<SyncStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const [isOnline] = useState(Math.random() > 0.3);
@@ -96,23 +98,23 @@ export default function SyncNowModal() {
   const canSync = isOnline && syncStatus !== "syncing";
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.surface }]}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: colors.background, borderBottomColor: colors.surfaceBorder }]}>
         <TouchableOpacity
           style={styles.closeButton}
           onPress={() => router.back()}
         >
-          <X color="#6B7280" size={24} />
+          <X color={colors.textTertiary} size={24} />
         </TouchableOpacity>
-        <Text style={styles.title}>{t.syncData}</Text>
+        <Text style={[styles.title, { color: colors.text }]}>{t.syncData}</Text>
         <View style={styles.placeholder} />
       </View>
 
       {/* Content */}
       <View style={styles.content}>
         {/* Connection Status */}
-        <View style={styles.connectionStatus}>
+        <View style={[styles.connectionStatus, { backgroundColor: colors.background }]}>
           <View style={styles.connectionIndicator}>
             {isOnline ? (
               <Wifi color="#10B981" size={20} />
@@ -120,7 +122,7 @@ export default function SyncNowModal() {
               <WifiOff color="#EF4444" size={20} />
             )}
           </View>
-          <Text style={[styles.connectionText, { color: isOnline ? "#10B981" : "#EF4444" }]}>
+          <Text style={[styles.connectionText, { color: isOnline ? colors.success : colors.error }]}>
             {isOnline ? t.connected : t.offline}
           </Text>
         </View>
@@ -140,18 +142,18 @@ export default function SyncNowModal() {
           </Text>
           
           {statusMessage && (
-            <Text style={styles.statusMessage}>{statusMessage}</Text>
+            <Text style={[styles.statusMessage, { color: colors.textTertiary }]}>{statusMessage}</Text>
           )}
         </View>
 
         {/* Sync Info */}
-        <View style={styles.syncInfo}>
-          <Text style={styles.syncInfoTitle}>{t.whatGetsSynced}</Text>
+        <View style={[styles.syncInfo, { backgroundColor: colors.background }]}>
+          <Text style={[styles.syncInfoTitle, { color: colors.text }]}>{t.whatGetsSynced}</Text>
           <View style={styles.syncInfoList}>
-            <Text style={styles.syncInfoItem}>• {t.energyUsageData}</Text>
-            <Text style={styles.syncInfoItem}>• {t.creditTransactions}</Text>
-            <Text style={styles.syncInfoItem}>• {t.alertPreferences}</Text>
-            <Text style={styles.syncInfoItem}>• {t.deviceSettings}</Text>
+            <Text style={[styles.syncInfoItem, { color: colors.textTertiary }]}>• {t.energyUsageData}</Text>
+            <Text style={[styles.syncInfoItem, { color: colors.textTertiary }]}>• {t.creditTransactions}</Text>
+            <Text style={[styles.syncInfoItem, { color: colors.textTertiary }]}>• {t.alertPreferences}</Text>
+            <Text style={[styles.syncInfoItem, { color: colors.textTertiary }]}>• {t.deviceSettings}</Text>
           </View>
         </View>
 
@@ -160,15 +162,12 @@ export default function SyncNowModal() {
           <TouchableOpacity
             style={[
               styles.syncButton,
-              !canSync && styles.disabledButton
+              { backgroundColor: canSync ? colors.success : colors.textTertiary }
             ]}
             onPress={handleSync}
             disabled={!canSync}
           >
-            <Text style={[
-              styles.syncButtonText,
-              !canSync && styles.disabledButtonText
-            ]}>
+            <Text style={styles.syncButtonText}>
               {syncStatus === "syncing" ? t.syncing : 
                syncStatus === "offline" ? t.queueForSync : t.startSync}
             </Text>
@@ -177,7 +176,7 @@ export default function SyncNowModal() {
 
         {/* Last Sync Info */}
         <View style={styles.lastSyncInfo}>
-          <Text style={styles.lastSyncText}>
+          <Text style={[styles.lastSyncText, { color: colors.textTertiary }]}>
             {t.lastSuccessfulSync}
           </Text>
         </View>
@@ -189,7 +188,6 @@ export default function SyncNowModal() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
   },
   header: {
     flexDirection: "row",
@@ -198,8 +196,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
-    backgroundColor: "#FFFFFF",
   },
   closeButton: {
     width: 40,
@@ -210,7 +206,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#111827",
   },
   placeholder: {
     width: 40,
@@ -224,7 +219,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FFFFFF",
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 20,
@@ -257,11 +251,9 @@ const styles = StyleSheet.create({
   },
   statusMessage: {
     fontSize: 16,
-    color: "#6B7280",
     textAlign: "center",
   },
   syncInfo: {
-    backgroundColor: "#FFFFFF",
     padding: 20,
     borderRadius: 12,
     marginBottom: 32,
@@ -269,7 +261,6 @@ const styles = StyleSheet.create({
   syncInfoTitle: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#111827",
     marginBottom: 12,
   },
   syncInfoList: {
@@ -277,25 +268,17 @@ const styles = StyleSheet.create({
   },
   syncInfoItem: {
     fontSize: 14,
-    color: "#6B7280",
     lineHeight: 20,
   },
   syncButton: {
-    backgroundColor: "#10B981",
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: "center",
     marginBottom: 24,
   },
-  disabledButton: {
-    backgroundColor: "#9CA3AF",
-  },
   syncButtonText: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#FFFFFF",
-  },
-  disabledButtonText: {
     color: "#FFFFFF",
   },
   lastSyncInfo: {
@@ -303,6 +286,5 @@ const styles = StyleSheet.create({
   },
   lastSyncText: {
     fontSize: 14,
-    color: "#6B7280",
   },
 });
