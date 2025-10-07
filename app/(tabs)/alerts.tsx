@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -13,17 +13,18 @@ import { useTheme } from "@/hooks/useTheme";
 
 type AlertType = "low_credit" | "predicted_runout" | "high_usage" | "connection_lost";
 
-interface Alert {
+interface AlertData {
   id: string;
   type: AlertType;
-  title: string;
-  message: string;
   timestamp: number;
   severity: "low" | "medium" | "high";
   read: boolean;
 }
 
-
+interface Alert extends AlertData {
+  title: string;
+  message: string;
+}
 
 export default function AlertsScreen() {
   const insets = useSafeAreaInsets();
@@ -31,12 +32,10 @@ export default function AlertsScreen() {
   const { t } = useLanguage();
   const { colors } = useTheme();
   
-  const [alerts] = useState<Alert[]>([
+  const [alertsData] = useState<AlertData[]>([
     {
       id: "1",
       type: "low_credit",
-      title: t.lowCreditWarning,
-      message: t.lowCreditWarningMessage,
       timestamp: Date.now() - 2 * 60 * 60 * 1000,
       severity: "medium",
       read: false,
@@ -44,8 +43,6 @@ export default function AlertsScreen() {
     {
       id: "2",
       type: "high_usage",
-      title: t.highUsageDetected,
-      message: t.highUsageDetectedMessage,
       timestamp: Date.now() - 4 * 60 * 60 * 1000,
       severity: "low",
       read: true,
@@ -53,13 +50,43 @@ export default function AlertsScreen() {
     {
       id: "3",
       type: "predicted_runout",
-      title: t.creditRunningLow,
-      message: t.creditRunningLowMessage,
       timestamp: Date.now() - 24 * 60 * 60 * 1000,
       severity: "high",
       read: true,
     },
   ]);
+
+  const alerts = useMemo<Alert[]>(() => {
+    return alertsData.map(alert => {
+      let title = "";
+      let message = "";
+      
+      switch (alert.type) {
+        case "low_credit":
+          title = t.lowCreditWarning;
+          message = t.lowCreditWarningMessage;
+          break;
+        case "high_usage":
+          title = t.highUsageDetected;
+          message = t.highUsageDetectedMessage;
+          break;
+        case "predicted_runout":
+          title = t.creditRunningLow;
+          message = t.creditRunningLowMessage;
+          break;
+        case "connection_lost":
+          title = "Connection Lost";
+          message = "Connection to device was lost.";
+          break;
+      }
+      
+      return {
+        ...alert,
+        title,
+        message,
+      };
+    });
+  }, [alertsData, t]);
 
 
 
