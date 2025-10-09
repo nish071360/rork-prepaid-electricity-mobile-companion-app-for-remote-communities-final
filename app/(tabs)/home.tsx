@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { DollarSign, Bluetooth, RefreshCw, MapPin, Sun, Moon } from "lucide-react-native";
+import { DollarSign, Bluetooth, RefreshCw, CreditCard, Sun, Moon } from "lucide-react-native";
 import { useAppState } from "@/hooks/useAppState";
 import { useTextSize } from "@/hooks/useTextSize";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -116,11 +116,11 @@ export default function HomeScreen() {
         </View>
 
         <TouchableOpacity
-          style={[styles.rechargeButton, { backgroundColor: colors.success }]}
+          style={[styles.rechargeButton, { backgroundColor: colors.primary }]}
           onPress={() => router.push("/add-credit")}
           activeOpacity={0.8}
         >
-          <MapPin color="#FFFFFF" size={40} strokeWidth={3} />
+          <CreditCard color="#FFFFFF" size={40} strokeWidth={3} />
           <Text style={[styles.rechargeText, { fontSize: getScaledFontSize(32) }]}>{t.recharge}</Text>
         </TouchableOpacity>
       </ScrollView>

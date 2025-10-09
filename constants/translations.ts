@@ -96,6 +96,20 @@ export interface Translations {
   highUsageDetectedMessage: string;
   creditRunningLow: string;
   creditRunningLowMessage: string;
+  topUpInApp: string;
+  addCreditDirectly: string;
+  orEnterCustomAmount: string;
+  topUpNow: string;
+  processing: string;
+  or: string;
+  visitNearbyChargingStation: string;
+  error: string;
+  pleaseEnterValidAmount: string;
+  maximumTopUpAmount: string;
+  success: string;
+  successfullyAdded: string;
+  toYourAccount: string;
+  failedToAddCredit: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -195,6 +209,20 @@ export const translations: Record<Language, Translations> = {
     highUsageDetectedMessage: "Today's usage is 25% above your average. Check for any unusual appliance activity.",
     creditRunningLow: "Credit Running Low",
     creditRunningLowMessage: "At current usage rate, your credit will run out in 2 days.",
+    topUpInApp: "Top Up In-App",
+    addCreditDirectly: "Add credit directly to your account",
+    orEnterCustomAmount: "Or enter custom amount:",
+    topUpNow: "Top Up Now",
+    processing: "Processing...",
+    or: "OR",
+    visitNearbyChargingStation: "Visit a nearby charging station or hub to add credit",
+    error: "Error",
+    pleaseEnterValidAmount: "Please enter a valid amount",
+    maximumTopUpAmount: "Maximum top-up amount is $500",
+    success: "Success",
+    successfullyAdded: "Successfully added",
+    toYourAccount: "to your account",
+    failedToAddCredit: "Failed to add credit. Please try again.",
   },
   Yumplatok: {
     settings: "Ol Seting",
@@ -292,6 +320,20 @@ export const translations: Record<Language, Translations> = {
     highUsageDetectedMessage: "Yusem tude i 25% moa lo averis blo yu. Lukim sapos i gat wan masin i yusem tumas.",
     creditRunningLow: "Kredit i Stap Lus",
     creditRunningLowMessage: "Lo ret blo yusem nau, kredit blo yu bae i finis lo 2 dei.",
+    topUpInApp: "Putum Moa Kredit lo App",
+    addCreditDirectly: "Putum kredit stret lo akant blo yu",
+    orEnterCustomAmount: "O raetem namba blo yu:",
+    topUpNow: "Putum Moa Nau",
+    processing: "I Prosesem...",
+    or: "O",
+    visitNearbyChargingStation: "Go lo wan ples blo putum pawa i stap klostu blo putum kredit",
+    error: "Eror",
+    pleaseEnterValidAmount: "Putum wan namba i stret",
+    maximumTopUpAmount: "Maksimam blo putum moa i $500",
+    success: "I Gud",
+    successfullyAdded: "I putum gud",
+    toYourAccount: "lo akant blo yu",
+    failedToAddCredit: "I no wok blo putum kredit. Traem bakegen.",
   },
   Kriol: {
     settings: "Ol Seting",
@@ -389,5 +431,19 @@ export const translations: Record<Language, Translations> = {
     highUsageDetectedMessage: "Yusem tudei i 25% moa langa averij blanga yu. Lukim sapos i gat wan mashin i yusem tumas.",
     creditRunningLow: "Kredit i Stap Lus",
     creditRunningLowMessage: "Langa ret blanga yusem nau, kredit blanga yu bla finish langa 2 dei.",
+    topUpInApp: "Putum Moa Kredit langa App",
+    addCreditDirectly: "Putum kredit stret langa akawnt blanga yu",
+    orEnterCustomAmount: "O raitim namba blanga yu:",
+    topUpNow: "Putum Moa Nau",
+    processing: "I Prosesim...",
+    or: "O",
+    visitNearbyChargingStation: "Go langa wan pleis blanga putum pawa i stap klous blanga putum kredit",
+    error: "Eror",
+    pleaseEnterValidAmount: "Putum wan namba i stret",
+    maximumTopUpAmount: "Maksimam blanga putum moa i $500",
+    success: "I Gud",
+    successfullyAdded: "I putum gud",
+    toYourAccount: "langa akawnt blanga yu",
+    failedToAddCredit: "I no wok blanga putum kredit. Traem bagen.",
   },
 };
