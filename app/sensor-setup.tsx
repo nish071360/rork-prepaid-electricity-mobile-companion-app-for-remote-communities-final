@@ -118,7 +118,11 @@ export default function SensorSetupModal() {
       
       // Auto-close after success
       setTimeout(() => {
-        router.back();
+        if (router.canGoBack()) {
+          router.back();
+        } else {
+          router.replace("/");
+        }
       }, 3000);
       
     } catch (error) {
@@ -295,7 +299,13 @@ export default function SensorSetupModal() {
             </Text>
             <TouchableOpacity
               style={styles.primaryButton}
-              onPress={() => router.back()}
+              onPress={() => {
+                if (router.canGoBack()) {
+                  router.back();
+                } else {
+                  router.replace("/");
+                }
+              }}
             >
               <Text style={styles.primaryButtonText}>{t.done}</Text>
             </TouchableOpacity>
@@ -313,7 +323,13 @@ export default function SensorSetupModal() {
       <View style={[styles.header, { backgroundColor: colors.background, borderBottomColor: colors.surfaceBorder }]}>
         <TouchableOpacity
           style={styles.closeButton}
-          onPress={() => router.back()}
+          onPress={() => {
+            if (router.canGoBack()) {
+              router.back();
+            } else {
+              router.replace("/");
+            }
+          }}
         >
           <X color={colors.textTertiary} size={24} />
         </TouchableOpacity>

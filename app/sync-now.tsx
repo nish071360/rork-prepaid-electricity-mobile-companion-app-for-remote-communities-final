@@ -58,7 +58,11 @@ export default function SyncNowModal() {
       
       // Auto-close after success
       setTimeout(() => {
-        router.back();
+        if (router.canGoBack()) {
+          router.back();
+        } else {
+          router.replace("/");
+        }
       }, 2000);
       
     } catch (error) {
@@ -103,7 +107,13 @@ export default function SyncNowModal() {
       <View style={[styles.header, { backgroundColor: colors.background, borderBottomColor: colors.surfaceBorder }]}>
         <TouchableOpacity
           style={styles.closeButton}
-          onPress={() => router.back()}
+          onPress={() => {
+            if (router.canGoBack()) {
+              router.back();
+            } else {
+              router.replace("/");
+            }
+          }}
         >
           <X color={colors.textTertiary} size={24} />
         </TouchableOpacity>

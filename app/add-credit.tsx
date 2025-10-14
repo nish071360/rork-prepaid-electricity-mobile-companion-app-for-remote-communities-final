@@ -91,7 +91,13 @@ export default function RechargeModal() {
         [
           {
             text: "OK",
-            onPress: () => router.back(),
+            onPress: () => {
+              if (router.canGoBack()) {
+                router.back();
+              } else {
+                router.replace("/");
+              }
+            },
           },
         ]
       );
@@ -111,7 +117,13 @@ export default function RechargeModal() {
         <View style={[styles.header, { backgroundColor: colors.background, borderBottomColor: colors.surfaceBorder }]}>
           <TouchableOpacity
             style={styles.closeButton}
-            onPress={() => router.back()}
+            onPress={() => {
+              if (router.canGoBack()) {
+                router.back();
+              } else {
+                router.replace("/");
+              }
+            }}
           >
             <X color={colors.textTertiary} size={24} />
           </TouchableOpacity>
