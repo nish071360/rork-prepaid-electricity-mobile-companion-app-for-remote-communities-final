@@ -181,26 +181,23 @@ export function useAppState() {
       note,
     };
 
-    // Optimistic update
-    setState({
-      ...state,
-      creditRemaining: state.creditRemaining + amount,
-    });
-
     try {
       // Store transaction locally
       const db = await initDB();
       await addTransaction(db, amount, source, note);
 
-      // TODO: Sync with server when online
-      console.log("Credit added successfully:", transaction);
-      return state.creditRemaining;
-    } catch (error) {
-      // Rollback on error
+      // Get updated balance from database
+      const newBalance = await getBalance(db);
+      
+      // Update state with actual balance
       setState((prev) => ({
         ...prev,
-        creditRemaining: prev.creditRemaining - amount,
+        creditRemaining: newBalance,
       }));
+
+      console.log("Credit added successfully:", transaction);
+      return newBalance;
+    } catch (error) {
       console.error(error);
       throw error;
     }
