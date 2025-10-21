@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -50,7 +50,6 @@ export default function SensorSetupModal() {
   };
 
   const handleEnableBluetooth = async () => {
-    // Simulate permission request
     await new Promise(resolve => setTimeout(resolve, 1000));
     setCurrentStep("scanning");
     startScanning();
@@ -60,7 +59,6 @@ export default function SensorSetupModal() {
     setIsScanning(true);
     setDevices([]);
     
-    // Simulate device discovery
     for (let i = 0; i < MOCK_DEVICES.length; i++) {
       await new Promise(resolve => setTimeout(resolve, 800));
       setDevices(prev => [...prev, MOCK_DEVICES[i]]);
@@ -80,7 +78,6 @@ export default function SensorSetupModal() {
     setIsConnecting(true);
 
     try {
-      // Simulate connection process
       await new Promise(resolve => setTimeout(resolve, 3000));
       
       if (Platform.OS !== "web") {
@@ -90,7 +87,6 @@ export default function SensorSetupModal() {
       setIsConnecting(false);
       setCurrentStep("testing");
       
-      // Auto-start test
       setTimeout(() => {
         handleTestConnection();
       }, 1000);
@@ -106,7 +102,6 @@ export default function SensorSetupModal() {
     setIsTesting(true);
     
     try {
-      // Simulate test read
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       if (Platform.OS !== "web") {
@@ -116,7 +111,6 @@ export default function SensorSetupModal() {
       setIsTesting(false);
       setCurrentStep("complete");
       
-      // Auto-close after success
       setTimeout(() => {
         if (router.canGoBack()) {
           router.back();
